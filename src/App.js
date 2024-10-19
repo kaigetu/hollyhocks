@@ -1,9 +1,16 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   let [count, setCount] = useState(0);
+  const [date, setDate] = useState(undefined);
+
+  useEffect(() => {
+    fetch("https://api.github.com/users/kaigetu")
+      .then((res) => res.json())
+      .then((json) => setDate(json));
+  }, []);
 
   return (
     <div className="App">
@@ -34,6 +41,18 @@ function App() {
         >
           👍{count}
         </p>
+        {date ? (
+          <>
+            <img
+              className="w-32 rounded-full mt-10"
+              alt="icon"
+              src={date.avatar_url}
+            />
+            <p className="text-wed-dark">{date.login}</p>
+          </>
+        ) : (
+          <p>no date</p>
+        )}
       </header>
     </div>
   );
